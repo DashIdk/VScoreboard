@@ -25,6 +25,7 @@ public class VScoreboard {
     }
     
     private String color(String str) {
+        if(str == null) return null;
         return ChatColor.translateAlternateColorCodes('&', str);
     }
 
