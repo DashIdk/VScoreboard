@@ -13,7 +13,7 @@ public class ScoreboardMap {
     
     public ScoreboardMap(int start, boolean descending) {
         this.descending = descending;
-        this.current = start;
+        this.current = start + (descending ? 1 : -1);
     }
     
     private boolean descending;
