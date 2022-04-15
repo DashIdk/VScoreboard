@@ -33,7 +33,9 @@ public class VScoreboard {
         String title = color(adapter.getTitle(player));
         if(!objective.getDisplayName().equals(title)) objective.setDisplayName(title);
         Map<Integer, String> lines = adapter.getLines(player).getMap();
-        for(int i = 0; i < Math.max(lines.size(), displayedScores.size()); i++) {
+        int mx = Math.max(lines.keySet().stream().max(Comparator.comparing((num) -> num)).orElse(0), displayedScores.keySet().stream().max(Comparator.comparing((num) -> num)).orElse(0));
+        int mn = Math.min(lines.keySet().stream().min(Comparator.comparing((num) -> num)).orElse(0), displayedScores.keySet().stream().min(Comparator.comparing((num) -> num)).orElse(0));
+        for(int i = mn; i < mx; i++) {
             String replaceLine = color(lines.get(i));
             String[] replaceScoreData = replaceLine == null ? null : separate(replaceLine);
             String replaceScoreName = replaceScoreData != null && replaceScoreData.length >= 1 ? replaceScoreData[0] : null;
