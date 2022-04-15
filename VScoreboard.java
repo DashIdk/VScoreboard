@@ -9,6 +9,7 @@ import org.bukkit.scoreboard.Team;
 import org.bukkit.ChatColor;
 
 import java.util.Map;
+import java.util.Set;
 
 public class VScoreboard {
     private Player player;
@@ -30,13 +31,11 @@ public class VScoreboard {
     }
 
     public void update(VScoreboardAdapter adapter) {
-        String title = color(adapter.getTitle(player));
+        String title = JColor.translateColorCodes(adapter.getTitle(player));
         if(!objective.getDisplayName().equals(title)) objective.setDisplayName(title);
         Map<Integer, String> lines = adapter.getLines(player).getMap();
-        int mx = Math.max(lines.keySet().stream().max(Comparator.comparing((num) -> num)).orElse(0), displayedScores.keySet().stream().max(Comparator.comparing((num) -> num)).orElse(0));
-        int mn = Math.min(lines.keySet().stream().min(Comparator.comparing((num) -> num)).orElse(0), displayedScores.keySet().stream().min(Comparator.comparing((num) -> num)).orElse(0));
-        for(int i = mn; i < mx; i++) {
-            String replaceLine = color(lines.get(i));
+        for(int i = min(lines.keySet(), displayedScores.keySet()); i < max(lines.keySet(), displayedScores.keySet()); i++) {
+            String replaceLine = JColor.translateColorCodes(lines.get(i));
             String[] replaceScoreData = replaceLine == null ? null : separate(replaceLine);
             String replaceScoreName = replaceScoreData != null && replaceScoreData.length >= 1 ? replaceScoreData[0] : null;
             String currentScore = displayedScores.get(i);
@@ -60,6 +59,18 @@ public class VScoreboard {
                 }
             }
         }
+    }
+
+    public int min(Set<Integer>... sets) {
+        int i = 0;
+        for(Set<Integer> ints : sets) for(int n : ints) if(n < i) i = n;
+        return i;
+    }
+
+    public int max(Set<Integer>... sets) {
+        int i = 0;
+        for(Set<Integer> ints : sets) for(int n : ints) if(n > i) i = n;
+        return i;
     }
 
     public String[] separate(String line) {
