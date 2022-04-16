@@ -31,11 +31,11 @@ public class VScoreboard {
     }
 
     public void update(VScoreboardAdapter adapter) {
-        String title = JColor.translateColorCodes(adapter.getTitle(player));
+        String title = color(adapter.getTitle(player));
         if(!objective.getDisplayName().equals(title)) objective.setDisplayName(title);
         Map<Integer, String> lines = adapter.getLines(player).getMap();
         for(int i = min(lines.keySet(), displayedScores.keySet()); i < max(lines.keySet(), displayedScores.keySet()); i++) {
-            String replaceLine = JColor.translateColorCodes(lines.get(i));
+            String replaceLine = color(lines.get(i));
             String[] replaceScoreData = replaceLine == null ? null : separate(replaceLine);
             String replaceScoreName = replaceScoreData != null && replaceScoreData.length >= 1 ? replaceScoreData[0] : null;
             String currentScore = displayedScores.get(i);
